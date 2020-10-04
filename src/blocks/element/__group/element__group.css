@@ -1,0 +1,7 @@
+.element__group {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0 21px;
+}

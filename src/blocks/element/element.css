@@ -1,0 +1,15 @@
+@import url(./__photo/element__photo.css);
+@import url(./__group/element__group.css);
+@import url(./__title/element__title.css);
+@import url(./__like/element__like.css);
+@import url(./__trash/element__trash.css);
+@import url(./__raiting/element__raiting.css);
+@import url(./__count/element__count.css);
+
+.element {
+    border-radius: 10px;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
