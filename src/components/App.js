@@ -27,9 +27,8 @@ function handleEditAvatarClick() {
   OpenPopupAvatar("popup_opened");
 }
 
-function handleCardClick() {
-
-  onCardClick(selectedCard)
+function handleCardClick(card) {
+  onCardClick(card)
   OpenPopupImage("popup_opened")
   //OpenPopupImage(selectedCard)
   console.log('123')
@@ -47,7 +46,7 @@ function closeAllPopups() {
       <div className="page">
         <Header />
         <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}
-         openFunction={handleCardClick} card={selectedCard}/>
+         openFunction={handleCardClick} />
         <Footer />
         <PopupWithForm   name="popup_edit" isOpen={isEditProfilePopupOpen} title="Редактировать профиль" onClose={closeAllPopups}
         submit="Сохранить" children={
@@ -91,8 +90,7 @@ function closeAllPopups() {
         }
         />
         <ImagePopup name="popup_photo"  name="popup_photo" onClose={closeAllPopups} 
-        isOpen={isPopupImageOpen} card={selectedCard}
-        />
+        isOpen={isPopupImageOpen} card={selectedCard} />
 
         <section className="popup popup_delete">
           <form className="popup__container" name="popup-form" noValidate>

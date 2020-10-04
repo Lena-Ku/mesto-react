@@ -1,9 +1,6 @@
 import React from 'react';
 
-function ImagePopup({name, onClose, isOpen}, card) {
-
-    console.log(card)
-
+function ImagePopup({name, onClose, isOpen, card}) {
 
     if({isOpen}) {
         return (
