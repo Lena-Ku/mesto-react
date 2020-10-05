@@ -9,34 +9,34 @@ import ImagePopup from './ImagePopup.js';
 
 function App() {
 
-  const [isEditProfilePopupOpen, OpenPopupProfile] = useState(false);
-  const [isAddPlacePopupOpen, OpenPopupPlace] = useState(false);
-  const [isEditAvatarPopupOpen, OpenPopupAvatar] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, onCardClick] = useState({});
-  const [isPopupImageOpen, OpenPopupImage] = useState(false)
+  const [isPopupImageOpen, setIsPopupImageOpen] = useState(false)
 
   function handleEditProfileClick() {
-    OpenPopupProfile("popup_opened");
+    setIsEditProfilePopupOpen(true);
   }
 
   function handleAddPlaceClick() {
-    OpenPopupPlace("popup_opened");
+    setIsAddPlacePopupOpen(true);
   }
 
   function handleEditAvatarClick() {
-    OpenPopupAvatar("popup_opened");
+    setIsEditAvatarPopupOpen(true);
   }
 
   function handleCardClick(card) {
     onCardClick(card)
-    OpenPopupImage("popup_opened")
+    setIsPopupImageOpen(true)
   }
 
   function closeAllPopups() {
-    OpenPopupPlace(false)
-    OpenPopupProfile(false)
-    OpenPopupAvatar(false)
-    OpenPopupImage(false)
+    setIsEditProfilePopupOpen(false)
+    setIsAddPlacePopupOpen(false)
+    setIsEditAvatarPopupOpen(false)
+    setIsPopupImageOpen(false)
   }
 
   return (
@@ -44,10 +44,10 @@ function App() {
       <div className="page">
         <Header />
         <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}
-          openFunction={handleCardClick} />
+          onCardClick={handleCardClick} />
         <Footer />
         <PopupWithForm name="popup_edit" isOpen={isEditProfilePopupOpen} title="Редактировать профиль" onClose={closeAllPopups}
-          submit="Сохранить" children={
+          submitButtonText="Сохранить" children={
             <>
               <div className="popup__field">
                 <input className="popup__item popup__item_el_heading" id="name" type="text" name="name"
@@ -62,7 +62,7 @@ function App() {
             </>
           }
         />
-        <PopupWithForm name="popup_add" isOpen={isAddPlacePopupOpen} title="Новое место" submit="Создать" onClose={closeAllPopups}
+        <PopupWithForm name="popup_add" isOpen={isAddPlacePopupOpen} title="Новое место" submitButtonText="Создать" onClose={closeAllPopups}
           children={
             <>
               <div className="popup__field">
@@ -79,7 +79,7 @@ function App() {
           }
         />
         <PopupWithForm name="popup_avatar-edit" isOpen={isEditAvatarPopupOpen} title="Обновить аватар" onClose={closeAllPopups}
-          submit="Сохранить" children={
+          submitButtonText="Сохранить" children={
             <div className="popup__field">
               <input className="popup__item" id="avatar" type="url" name="avatar"
                 placeholder="Ссылка на аватар" required />
@@ -87,10 +87,8 @@ function App() {
             </div>
           }
         />
-        <PopupWithForm name="popup_popup_delete" title="Вы уверены?" submit="Да" children={
-          <button className="popup__button popup__button_delete" type="submit">Да</button>
-        }
-        />
+        <PopupWithForm name="popup_popup_delete" title="Вы уверены?" submitButtonText="Да"/>
+
         <ImagePopup name="popup_photo" onClose={closeAllPopups} isOpen={isPopupImageOpen} card={selectedCard} />
       </div>
     </>

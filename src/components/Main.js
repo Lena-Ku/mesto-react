@@ -3,7 +3,7 @@ import profileAvatar from '../images/profile__avatar.jpg'
 import api from '../utils/api.js'
 import Card from './Card.js'
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, openFunction }) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
   const [userName, setUserName] = useState('Жак-Ив Кусто');
   const [userDescription, setUserDescription] = useState('Исследователь океана');
@@ -23,10 +23,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, openFunction }) {
           data.avatar
         )
       })
-  }, [])
-
-  useEffect(() => {
-    api.getAllCards()
+      api.getAllCards()
       .then((data) => {
         const card = data.map((item) => ({
           title: item.name,
@@ -57,7 +54,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, openFunction }) {
       <section className="elements">
         {cards && cards.map((item) => (
 
-          <Card key={item.id} {...item} onCardClick={openFunction} card={item} />
+          <Card key={item.id} {...item} onCardClick={onCardClick} card={item} />
 
         ))}
       </section>

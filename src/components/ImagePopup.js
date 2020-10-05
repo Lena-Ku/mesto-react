@@ -2,9 +2,8 @@ import React from 'react';
 
 function ImagePopup({ name, onClose, isOpen, card }) {
 
-  if ({ isOpen }) {
     return (
-      <section className={`popup popup_type_${name} ${isOpen}`}>
+      <section className={`popup popup_type_${name} ${isOpen ? "popup_opened" : " "}`}>
         <div className="popup__content">
           <figure className="popup__figure">
             <img className="popup__photo" alt="" src={card.src} />
@@ -14,7 +13,6 @@ function ImagePopup({ name, onClose, isOpen, card }) {
         </div>
       </section>
     )
-  }
 }
 
 export default ImagePopup;
