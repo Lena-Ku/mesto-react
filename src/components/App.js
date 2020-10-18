@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import '../pages/index.css';
 import Header from './Header.js';
 import Main from './Main.js';
@@ -8,22 +7,12 @@ import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 import api from '../utils/api';
 import { initialUser, CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import { CurrentCardContext, card } from '../contexts/CurrentCardContext.js';
+import { CurrentCardContext } from '../contexts/CurrentCardContext.js';
 import EditProfilePopup from '../components/EditProfilePopup.js';
+import EditAvatarPopup from '../components/EditAvatarPopup.js';
+import AddPlacePopup from '../components/AddPlacePopup.js';
 
 function App() {
-
-  /*function getAllData() {
-    return Promise.all([
-      api.getUser(),
-      api.getAllCards()
-    ])
-    .then(([user, cards]) => {
-      return {user, cards}
-    })
-  }
-
-  const promise = getAllData(); */
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -32,8 +21,6 @@ function App() {
   const [isPopupImageOpen, setIsPopupImageOpen] = useState(false)
   const [currentUser, setCurrentUser] = useState(initialUser);
   const [cards, setCards] = useState([]);
-  const [newUser, onUpdateUser] = useState(false);
-
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
@@ -59,15 +46,6 @@ function App() {
     setIsPopupImageOpen(false)
   }
 
-  /*useEffect(() => {
-    promise.then(data => {
-      setCurrentUser(data.user);
-      setCards(data.cards);
-    });
-  }, []);*/
-
-
-
   useEffect(() => {
     api.getUser()
       .then((data) =>
@@ -75,8 +53,8 @@ function App() {
       )
     api.getAllCards()
       .then((data) => {
-        console.log(data)
-        setCards(data)}
+        setCards(data)
+      }
       )
   }, [])
 
@@ -101,28 +79,56 @@ function App() {
 
   function handleCardDelete(card) {
     api.deleteCard(card._id)
-    .then((deletedCard) => {
-      const newCards = cards.filter((c) => c._id !== card._id)
-      setCards(newCards);
-    })
+      .then((deletedCard) => {
+        const newCards = cards.filter((c) => c._id !== card._id)
+        setCards(newCards);
+      })
   }
 
-  function handleUpdateUser(currentUser) {
-    console.log('123')
-    onUpdateUser(true)
-    api.getUser(currentUser)
-    .then((data) => {
-      console.log(data)
-      //setCurrentUser(data.name)
+  function handleUpdateUser({
+    name,
+    about: description }) {
+    api.changeUser({
+      name,
+      about: description
     })
+      .then((data) => {
+        setCurrentUser({
+          name: data.name,
+          about: data.about,
+          avatar: data.avatar
+        })
+      })
     closeAllPopups();
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log('11')
-}
-  
+  function handleUpdateAvatar({
+    avatar: url }) {
+    api.changeAvatar({ avatar: url })
+      .then((data) => {
+        setCurrentUser({
+          name: data.name,
+          about: data.about,
+          avatar: data.avatar
+        })
+      })
+    closeAllPopups();
+  }
+
+  function handleAddPlaceSubmit({
+    name: place,
+    link: link }) {
+
+    api.addCard({
+      name: place,
+      link: link
+    })
+      .then((data) => {
+        const newCard = data;
+        setCards([...cards, newCard]);
+      })
+    closeAllPopups()
+  }
 
   return (
     <>
@@ -134,35 +140,13 @@ function App() {
               onCardClick={handleCardClick} onCardLike={handleCardLike} onDeleteCardClick={handleCardDelete} />
             <Footer />
 
-            <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}
-            handleSubmit={handleSubmit}/> 
+            <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
 
-            <PopupWithForm name="popup_add" isOpen={isAddPlacePopupOpen} title="Новое место" submitButtonText="Создать" onClose={closeAllPopups}
-              onSubmit={handleSubmit}  children={
-                <>
-                  <div className="popup__field">
-                    <input className="popup__item popup__item_el_place" id="place" type="text" name="name"
-                      placeholder="Название" required minLength="1" maxLength="30" />
-                    <span className="popup__item-error" id="place-error"></span>
-                  </div>
-                  <div className="popup__field">
-                    <input className="popup__item popup__item_el_link" id="link" type="url" name="link"
-                      placeholder="Ссылка на картинку" required />
-                    <span className="popup__item-error" id="link-error"></span>
-                  </div>
-                </>
-              }
-            />
-            <PopupWithForm name="popup_avatar-edit" isOpen={isEditAvatarPopupOpen} title="Обновить аватар" onClose={closeAllPopups}
-              onSubmit={handleSubmit} submitButtonText="Сохранить" children={
-                <div className="popup__field">
-                  <input className="popup__item" id="avatar" type="url" name="avatar"
-                    placeholder="Ссылка на аватар" required />
-                  <span className="popup__item-error" id="avatar-error"></span>
-                </div>
-              }
-            />
-            <PopupWithForm name="popup_popup_delete" title="Вы уверены?" submitButtonText="Да" onSubmit={handleSubmit}/>
+            <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onUpdateCard={handleAddPlaceSubmit} />
+
+            <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateAvatar} />
+
+            <PopupWithForm name="popup_popup_delete" title="Вы уверены?" submitButtonText="Да" />
 
             <ImagePopup name="popup_photo" onClose={closeAllPopups} isOpen={isPopupImageOpen} card={selectedCard} />
 

@@ -4,7 +4,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function EditProfilePopup(props) {
 
-    const {onClose, isOpen, onUpdateUser, handleSubmit} = props;
+    const {onClose, isOpen, onUpdateUser} = props;
 
     const [name, setName] = useState('Жак-Ив Кусто');
     const [description, setDescription] = useState('Исследователь океана');
@@ -18,28 +18,18 @@ function EditProfilePopup(props) {
         setDescription(e.target.value);
     } 
 
-    //console.log(handleSubmit)
-
-   //console.log(setCurrentUser)
-
-   /* function handleSubmit(e) {
-        e.preventDefault();
-        console.log('444')
-        //onUpdateUser()
-
-        onUpdateUser({
-            name: name,
-            about: description
-        })
-
-        //console.log(onUpdateUser)
-    }*/
-
     useEffect(() => {
         setName(currentUser.name);
         setDescription(currentUser.about);
       }, [currentUser]); 
    
+      function handleSubmit(e) {
+        e.preventDefault();
+        onUpdateUser({
+            name,
+            about: description
+        })
+    }
 
     return (
 

@@ -16,3 +16,4 @@
 @import url(../blocks/popup/__heading/_delete/popup__heading_delete.css);
 @import url(../blocks/popup/__button/_delete/popup__button_delete.css);
 @import url(../blocks/element/__trash/_active/element__trash_active.css);
+@import url(../blocks/element/__trash/_hidden/element__trash_hidden.css);
