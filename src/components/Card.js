@@ -12,7 +12,8 @@ function Card(props) {
   }
 
   const isOwn = card.owner._id === user._id;
-
+  const isLiked = card.likes.some(i => i._id === user._id);
+  
   function handleDeleteClick() {
     cardDeleteButton(card)
   }
@@ -24,7 +25,7 @@ function Card(props) {
       <figcaption className="element__group">
         <h2 className="element__title">{props.name}</h2>
         <div className="element__raiting">
-          <button className="element__like" type="button" onClick={handleLikeClick}></button>
+          <button className={`element__like element__like_${isLiked ? "active" : "hidden"}`} type="button" onClick={handleLikeClick}></button>
           <p className="element__count">{props.likes}</p>
         </div>
       </figcaption>

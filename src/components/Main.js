@@ -29,7 +29,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike
         {cards && cards.map((item) => (
 
           <Card key={item._id} name={item.name} likes={item.likes.length} link={item.link} onCardLike={onCardLike}
-            card={item}  onCardClick={onCardClick} user={currentUser} cardDeleteButton={onDeleteCardClick}/>
+            card={item} onCardClick={onCardClick} user={currentUser} cardDeleteButton={onDeleteCardClick} />
         ))}
 
       </section>
